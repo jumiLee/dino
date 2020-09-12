@@ -1,20 +1,24 @@
 package first.vassystem.service;
 
 import first.vassystem.packet.ItemListPacket;
+import first.vassystem.packet.ItemListWithUserPacket;
 import first.vassystem.packet.ItemMgmtPacket;
 import first.vassystem.packet.ShopListPacket;
 
 public interface ShopService {
 
-	/* À¯·á»óÁ¡Á¶È¸  */
+	/* Item List */
+	ItemListWithUserPacket getItemList(int user_account) throws Exception;
+	
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸  */
 	ShopListPacket getShopList(int device_type,int payment_type) throws Exception;
 	
-	/* Ä«Å×°í¸®º° »óÁ¡Á¶È¸   */
+	/* Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸   */
 	ItemListPacket getShopListByCategory(int shop_category) throws Exception;
 	
-	/* ¾ÆÀÌÅÛ ±¸¸Å   */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½   */
 	ItemMgmtPacket buyItem(int user_account, int item_id, int item_cnt) throws Exception;
 	
-	/* ¾ÆÀÌÅÛ »ç¿ë   */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½   */
 	ItemMgmtPacket useItem(int user_account, int item_unique_id, int item_cnt) throws Exception;
 }

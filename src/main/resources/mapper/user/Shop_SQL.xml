@@ -51,6 +51,14 @@
 	}
 	</select>
 	
+	<select id="selectItemList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="itemList"> 
+	{ 
+		call abn_getItemList (
+			#{inParam01, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
 	<select id="mgmtItem" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
 	{ 
 		call abn_MgmtItem_out (
