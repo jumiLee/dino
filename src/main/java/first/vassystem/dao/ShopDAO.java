@@ -13,6 +13,12 @@ import first.vassystem.dto.ShopList;
 @Repository("ShopDAO")
 public class ShopDAO extends AbstractDAO {
 
+	/* Item List */
+	@SuppressWarnings("unchecked")
+	public List<ItemList> selectItemList(ParamVO paramVO) throws Exception{ 
+		return (List<ItemList>)selectList("shop.selectItemList", paramVO); 
+	}
+	
 	@SuppressWarnings("unchecked") 
 	public List<ShopList> selectShopList(ParamVO paramVO) throws Exception{ 
 		return (List<ShopList>)selectList("shop.selectShopList",paramVO); 

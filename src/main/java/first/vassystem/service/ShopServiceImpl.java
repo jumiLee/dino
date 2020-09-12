@@ -13,6 +13,7 @@ import first.vassystem.dao.UserInfoDAO;
 import first.vassystem.dto.ItemList;
 import first.vassystem.dto.ShopList;
 import first.vassystem.packet.ItemListPacket;
+import first.vassystem.packet.ItemListWithUserPacket;
 import first.vassystem.packet.ItemMgmtPacket;
 import first.vassystem.packet.ShopListPacket;
 
@@ -30,8 +31,33 @@ public class ShopServiceImpl implements ShopService {
 	
 	private static final int ITEM_BUY = 1;
 	
+	/* Item List */
+	@Override
+	public ItemListWithUserPacket getItemList(int user_account) throws Exception {
+		
+		ItemListWithUserPacket itemListWithUserPacket = new ItemListWithUserPacket();
+		
+		//Get Item List 
+		ParamVO vo = new ParamVO(); 
+		vo.setInParam01(1);
+		
+		List<ItemList> itemList = shopDAO.selectItemList(vo);
+		
+		if(itemList.size() ==0 ) {			
+			itemListWithUserPacket.resultCd = -1;
+			itemListWithUserPacket.resultMsg = "No item!";
+		}else {
+			itemListWithUserPacket.itemList = itemList;
+		}
+		
+		//Get User Detail Info
+		itemListWithUserPacket.userDetail = userInfoDAO.selectUserDetail(user_account);
+		
+		return itemListWithUserPacket;
+	}
+	
 	/**
-	 * À¯·á»óÁ¡Á¶È¸
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸
 	 */
 	@Override
 	public ShopListPacket getShopList(int device_type,int payment_type) throws Exception {
@@ -52,7 +78,7 @@ public class ShopServiceImpl implements ShopService {
 		return shopListPacket;
 	}
 	
-	/* Ä«Å×°í¸®º° »óÁ¡Á¶È¸   */
+	/* Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸   */
 	@Override
 	public ItemListPacket getShopListByCategory(int shop_category) throws Exception {
 		
@@ -70,7 +96,7 @@ public class ShopServiceImpl implements ShopService {
 		return itemListPacket;
 	}
 	
-	/* ¾ÆÀÌÅÛ ±¸¸Å   */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½   */
 	@Override
 	public ItemMgmtPacket buyItem(int user_account, int item_id, int item_cnt) throws Exception {
 		
@@ -79,7 +105,7 @@ public class ShopServiceImpl implements ShopService {
 		String resultMsg = "";
 		
 		ParamVO vo = new ParamVO(); 
-		vo.setInParam01(ITEM_BUY);	//±¸¸Å
+		vo.setInParam01(ITEM_BUY);	//ï¿½ï¿½ï¿½ï¿½
 		vo.setInParam02(user_account);
 		vo.setInParam03(item_id);
 		vo.setInParam04(item_cnt);
@@ -95,7 +121,7 @@ public class ShopServiceImpl implements ShopService {
 		return itemMgmtPacket;
 	}
 	
-	/* ¾ÆÀÌÅÛ »ç¿ë   */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½   */
 	@Override
 	public ItemMgmtPacket useItem(int user_account, int item_unique_id, int item_cnt) throws Exception {
 		

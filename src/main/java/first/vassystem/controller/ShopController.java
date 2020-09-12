@@ -12,6 +12,7 @@ import first.common.exception.AccessDeniedException;
 import first.common.util.ReturnType;
 import first.vassystem.packet.HeaderPacket;
 import first.vassystem.packet.ItemListPacket;
+import first.vassystem.packet.ItemListWithUserPacket;
 import first.vassystem.packet.ItemMgmtPacket;
 import first.vassystem.packet.ShopListPacket;
 import first.vassystem.service.MemberService;
@@ -28,7 +29,15 @@ public class ShopController {
 	@Autowired 
 	private MemberService memberService;
 	
-	/* À¯·á»óÁ¡Á¶È¸ */
+	/* Get Item List */
+	@RequestMapping(value="/itemList.do", produces = "application/json")
+	@ResponseBody
+	public ItemListWithUserPacket itemList(@RequestParam int user_account) throws Exception {
+		
+		return shopService.getItemList(user_account);
+	}
+	
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ */
 	@RequestMapping(value="/shopList.do", produces = "application/json")
 	@ResponseBody
 	public ShopListPacket shopList(
@@ -39,7 +48,7 @@ public class ShopController {
 		return shopService.getShopList(device_type, payment_type);
 	}
 	
-	/* »óÁ¡Á¶È¸ */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ */
 	@RequestMapping(value="/shopListByCategory.do", produces = "application/json")
 	@ResponseBody
 	public ItemListPacket shopListByCategory(
@@ -49,7 +58,7 @@ public class ShopController {
 		return shopService.getShopListByCategory(shop_category);
 	}
 	
-	/* ¾ÆÀÌÅÛ ±¸¸Å */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 	@RequestMapping(value="/buyItem.do", produces = "application/json")
 	@ResponseBody
 	public ItemMgmtPacket buyItem(
@@ -67,7 +76,7 @@ public class ShopController {
 		return shopService.buyItem(user_account, item_id, item_cnt);
 	}
 	
-	/* ¾ÆÀÌÅÛ »ç¿ë */
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ */
 	@RequestMapping(value="/useItem.do", produces = "application/json")
 	@ResponseBody
 	public ItemMgmtPacket useItem(
