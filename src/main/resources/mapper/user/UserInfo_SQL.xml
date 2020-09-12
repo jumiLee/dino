@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="userMain"> 
+
+	<resultMap id="userDetail" type="first.vassystem.dto.UserDetail">
+		<result property = "account" 	column = "user_account"/>
+ 		<result property = "point" 		column = "user_point"/> 		
+ 		<result property = "nickname" 	column = "nickname"/> 		
+	</resultMap>
+	
+	<resultMap id="userNotice" type="first.vassystem.dto.UserNotice"> 		
+ 		<result property = "monsterNewFlag" column = "mon_new"/>
+	</resultMap>
+	
+	<resultMap id="userScore" type="first.vassystem.dto.UserScore">
+ 		<result property = "today_total_gold" 		column = "today_total_gold"/>
+ 		<result property = "today_total_bat_cnt" 	column = "today_total_bat_cnt"/>
+ 		<result property = "today_total_win_cnt" 	column = "today_total_win_cnt"/>
+ 		<result property = "today_total_lose_cnt" 	column = "today_total_lose_cnt"/>
+ 		<result property = "total_bat_cnt" 			column = "total_bat_cnt"/>
+ 		<result property = "total_win_cnt" 			column = "total_win_cnt"/>
+ 		<result property = "total_lose_cnt" 		column = "total_lose_cnt"/>
+ 		<result property = "total_bat_cnt2" 		column = "total_bat_cnt2"/>
+ 		<result property = "total_win_cnt2" 		column = "total_win_cnt2"/>
+ 		<result property = "total_lose_cnt2" 		column = "total_lose_cnt2"/>
+ 		<result property = "total_bat_cnt3" 		column = "total_bat_cnt3"/>
+ 		<result property = "total_win_cnt3" 		column = "total_win_cnt3"/>
+ 		<result property = "total_lose_cnt3" 		column = "total_lose_cnt3"/>
+ 		<result property = "user_rank" 				column = "user_rank"/>
+	</resultMap>		
+	
+	<resultMap id="userAPPacket" type="first.vassystem.packet.UserAPPacket">
+	 	<result property = "resultCd" 		column = "resultCd"/>	
+ 		<result property = "userAP.maxAP" 	column = "max_ap"/>
+ 		<result property = "userAP.curAP" 	column = "cur_ap"/>
+ 		<result property = "amt" 			column = "amt"/>
+ 		<result property = "safeMoney" 		column = "safe_money"/>
+ 	</resultMap>		
+	
+	<select id="selectUserDetail" statementType="CALLABLE" parameterType="int" resultMap ="userDetail"> 
+	{ 
+		call abn_getUserDetail (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+
+	<select id="selectUserNotice" statementType="CALLABLE" parameterType="int" resultMap ="userNotice"> 
+	{ 
+		call abn_getNoticeInfo (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<select id="selectUserAttend" statementType="CALLABLE" parameterType="int" resultType ="int"> 
+	{ 
+		call abn_getAttendInfo (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<select id="selectUserScore" statementType="CALLABLE" parameterType="int" resultMap ="userScore"> 
+	{ 
+		call abn_getUserScore (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<update id="updateSid" parameterType="first.common.util.ParamVO"> 	
+		update mst_user
+		   set sid = #{inStrParam01, jdbcType = VARCHAR}
+		 where user_account = #{inParam01, jdbcType = INTEGER}
+	</update>
+	
+	<select id="selectUserBySid" parameterType="first.common.util.ParamVO" resultType ="int"> 
+		select count(user_account) as cnt 
+		 from  mst_user 
+		where  user_account = #{inParam01, jdbcType = INTEGER}
+		  and  sid = #{inStrParam01, jdbcType = VARCHAR}
+	</select>
+	
+	<select id="chargeUserGold" statementType="CALLABLE" parameterType="int" resultMap ="userAPPacket"> 
+	{ 
+		call abn_chargeFreeGold (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+</mapper>

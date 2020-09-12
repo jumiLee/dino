@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="battle"> 
+
+	<select id="mgmtBattleEnd" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_BattleEnd (
+							 #{inParam01,mode=IN,jdbcType=INTEGER}
+							,#{inParam02,mode=IN,jdbcType=INTEGER}
+							,#{inParam03,mode=IN,jdbcType=INTEGER}
+							,#{inParam04,mode=IN,jdbcType=INTEGER}
+							,#{inParam05,mode=IN,jdbcType=INTEGER}
+							,#{inParam06,mode=IN,jdbcType=INTEGER}
+							,#{outParam01,mode=OUT,jdbcType=INTEGER}
+							)
+	}
+	</select>
+</mapper>

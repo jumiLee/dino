@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="userSafe"> 
+
+	<resultMap id="drawList" type="first.vassystem.dto.UserSafe">
+ 		<result property = "money" 		column = "user_gold"/>
+ 		<result property = "safe_money" column = "safe_money"/>
+ 		<result property = "safe_limit" column = "safe_limit"/>
+	</resultMap>
+
+	<select id="selectUserSafe" statementType="CALLABLE" parameterType="int" resultMap ="drawList"> 
+	{ 
+		call abn_getUserSafe (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+
+	<select id="mgmtUserSafe" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_MgmtUserSafe (
+								#{inParam01,mode=IN,jdbcType=INTEGER}	<!-- 입출금 code -->
+								,#{inParam02,mode=IN,jdbcType=INTEGER}	<!-- user_account -->
+								,#{inParam03,mode=IN,jdbcType=INTEGER}	<!-- 입출금 금액 -->
+							    ,#{outParam01,mode=OUT,jdbcType=INTEGER}
+							   )
+	}
+	</select>
+</mapper>

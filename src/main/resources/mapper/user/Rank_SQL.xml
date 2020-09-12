@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="rank"> 
+
+	<resultMap id="rankList" type="first.vassystem.dto.RankList">
+ 		<result property = "userAccount" column = "user_account"/>
+ 		<result property = "itemId" 	column = "user_image"/>
+ 		<result property = "nickname" 	column = "nick_name"/>
+ 		<result property = "point" 		column = "user_score"/>
+ 		<result property = "rank" 		column = "user_rank"/>
+	</resultMap>
+
+	<select id="selecRankList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="rankList"> 
+	{ 
+		call abn_getRank (
+			 #{inParam01,mode=IN,jdbcType=INTEGER}
+			,#{inParam02,mode=IN,jdbcType=INTEGER}
+			,#{inParam03,mode=IN,jdbcType=INTEGER}
+		)
+	}
+	</select>
+</mapper>
