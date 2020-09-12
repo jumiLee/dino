@@ -11,12 +11,9 @@ import first.common.util.ParamVO;
 import first.vassystem.dao.ShopDAO;
 import first.vassystem.dao.UserInfoDAO;
 import first.vassystem.dto.ItemList;
-import first.vassystem.dto.ShopList;
-import first.vassystem.packet.ItemListPacket;
 import first.vassystem.packet.ItemListWithUserPacket;
 import first.vassystem.packet.ItemMgmtPacket;
-import first.vassystem.packet.ShopListPacket;
-
+import first.vassystem.packet.ItemPacket;
 
 @Service 
 public class ShopServiceImpl implements ShopService {
@@ -40,6 +37,7 @@ public class ShopServiceImpl implements ShopService {
 		//Get Item List 
 		ParamVO vo = new ParamVO(); 
 		vo.setInParam01(1);
+		vo.setInParam02(0);
 		
 		List<ItemList> itemList = shopDAO.selectItemList(vo);
 		
@@ -56,56 +54,18 @@ public class ShopServiceImpl implements ShopService {
 		return itemListWithUserPacket;
 	}
 	
-	/**
-	 * ���������ȸ
-	 */
+	/* Buy Item */
 	@Override
-	public ShopListPacket getShopList(int device_type,int payment_type) throws Exception {
+	public ItemPacket buyItem(int user_account, int item_id, int item_cnt) throws Exception {
 		
-		ShopListPacket shopListPacket = new ShopListPacket();
-		ParamVO vo = new ParamVO(); 
-		vo.setInParam01(device_type);
-		vo.setInParam02(payment_type);
-		
-		List<ShopList> shopList = shopDAO.selectShopList(vo);
-	
-		if(shopList.size() ==0 ) {			
-			shopListPacket.resultCd = -1;
-			shopListPacket.resultMsg = "No shop item!";
-		}else {
-			shopListPacket.shopList = shopList;
-		}
-		return shopListPacket;
-	}
-	
-	/* ī�װ��� ������ȸ   */
-	@Override
-	public ItemListPacket getShopListByCategory(int shop_category) throws Exception {
-		
-		ItemListPacket itemListPacket = new ItemListPacket();
-		
-		List<ItemList> itemList = shopDAO.selectItemListByCategory(shop_category);
-		
-		if(itemList.size() ==0 ) {			
-			itemListPacket.resultCd = -1;
-			itemListPacket.resultMsg = "No item!";
-		}else {
-			itemListPacket.itemList = itemList;
-		}
-		
-		return itemListPacket;
-	}
-	
-	/* ������ ����   */
-	@Override
-	public ItemMgmtPacket buyItem(int user_account, int item_id, int item_cnt) throws Exception {
-		
-		ItemMgmtPacket itemMgmtPacket = new ItemMgmtPacket();
+		ItemPacket itemPacket = new ItemPacket();
 		int resultCd = 0;
 		String resultMsg = "";
+		int itemUniqueId = 0;
 		
+	//Buy Item Process
 		ParamVO vo = new ParamVO(); 
-		vo.setInParam01(ITEM_BUY);	//����
+		vo.setInParam01(ITEM_BUY);	
 		vo.setInParam02(user_account);
 		vo.setInParam03(item_id);
 		vo.setInParam04(item_cnt);
@@ -114,14 +74,26 @@ public class ShopServiceImpl implements ShopService {
 		
 		resultCd = vo.getOutParam01();
 		resultMsg = vo.getOutStrParam01();
+		itemUniqueId = vo.getOutParam02();
 		
-		itemMgmtPacket.userDetail = userInfoDAO.selectUserDetail(user_account);
-		itemMgmtPacket.setHeader(user_account,resultCd,resultMsg);
+	//Result Packet Setting
+		ParamVO paramVO = new ParamVO(); 
+		paramVO.setInParam01(1); //job_code
+		paramVO.setInParam02(item_id);
 		
-		return itemMgmtPacket;
-	}
+		List<ItemList> itemList = shopDAO.selectItemList(paramVO);
+		
+		if(!itemList.isEmpty()) {
+			itemPacket.itemList = itemList.get(0);
+		}
+		itemPacket.itemUniqueID = itemUniqueId;
+		
+		itemPacket.setHeader(user_account,resultCd,resultMsg);
+		
+		return itemPacket;
+	}	
 	
-	/* ������ ���   */
+	/* Use Item   */
 	@Override
 	public ItemMgmtPacket useItem(int user_account, int item_unique_id, int item_cnt) throws Exception {
 		
