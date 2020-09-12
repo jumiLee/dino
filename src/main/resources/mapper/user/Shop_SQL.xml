@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="shop"> 
+
+	<resultMap id="shpoList" type="first.vassystem.dto.ShopList">
+ 		<result property = "cashId" 	column = "cash_id"/>
+ 		<result property = "cashTypeCd" column = "cash_type_cd"/>
+ 		<result property = "cashAmt" 	column = "cash_amt"/>
+ 		<result property = "cashDisAmt" column = "cash_dis_amt"/>
+ 		<result property = "coinAmt" 	column = "coin_amt"/>
+ 		<result property = "coinNm" 	column = "coin_nm"/>
+ 		<result property = "coinDesc" 	column = "coin_desc"/>
+ 		<result property = "prodId" 	column = "prod_id"/>
+ 		<result property = "deviceType" column = "device_type"/>
+ 		<result property = "prodImgNo" 	column = "prod_img"/>
+	</resultMap>
+
+	<resultMap id="itemList" type="first.vassystem.dto.ItemList">
+ 		<result property = "itemId" 			column = "item_id"/>
+ 		<result property = "itemNm" 			column = "item_nm"/>
+ 		<result property = "itemCategory" 		column = "item_category"/>
+ 		<result property = "itemType" 			column = "item_type"/>
+ 		<result property = "itemPrice" 			column = "item_price"/>
+ 		<result property = "unit_cd" 			column = "unit_cd"/>
+ 		<result property = "itemDesc" 			column = "item_desc"/>
+ 		<result property = "itemValue" 			column = "item_value"/>
+ 		<result property = "itemCnt" 			column = "item_cnt"/>
+ 		<result property = "itemPeriodFlag" 	column = "item_period_flag"/>
+ 		<result property = "itemPeriod" 		column = "item_period"/>
+ 		<result property = "itemDupFlag" 		column = "item_dup_flag"/>
+ 		<result property = "itemNewFlag" 		column = "item_new_flag"/>
+ 		<result property = "itemImgNo" 			column = "item_img_no"/>
+	</resultMap>
+	
+	<select id="selectShopList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="shpoList"> 
+	{ 
+		call abn_getCashList (
+			1
+			,#{inParam01,mode=IN,jdbcType=INTEGER}
+			,#{inParam02,mode=IN,jdbcType=INTEGER}
+		)
+	}
+	</select>
+
+	<select id="selectItemListByCategory" statementType="CALLABLE" parameterType="int" resultMap ="itemList"> 
+	{ 
+		call abn_getItemListByShopCategory (
+			#{shop_category, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<select id="mgmtItem" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_MgmtItem_out (
+								 #{inParam01,mode=IN,jdbcType=INTEGER} 		<!-- 거래코드 -->
+								,#{inParam02,mode=IN,jdbcType=INTEGER}		<!-- user_account-->
+								,#{inParam03,mode=IN,jdbcType=INTEGER}		<!-- item_id -->
+								,#{inParam04,mode=IN,jdbcType=INTEGER}		<!-- item_cnt -->
+								,null										<!-- payment_amt -->
+								,#{outParam01,	 mode=OUT,jdbcType=INTEGER}	<!-- result_code -->
+								,#{outStrParam01,mode=OUT,jdbcType=VARCHAR}<!-- result message -->
+								)
+	}
+	</select>
+	
+	<!-- 아이템 사용 -->
+	<select id="useItem" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_MgmtItem_use (
+								 #{inParam01,	mode=IN,jdbcType=INTEGER}	<!-- user_account-->
+								,#{inParam02,	mode=IN,jdbcType=INTEGER}	<!-- item_unique_id -->
+								,#{inParam03,	mode=IN,jdbcType=INTEGER}	<!-- item_cnt -->
+								,#{outParam01,	mode=OUT,jdbcType=INTEGER}	<!-- result_code -->
+								)
+	}
+	</select>
+</mapper>

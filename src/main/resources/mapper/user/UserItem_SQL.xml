@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="item"> 
+
+	<resultMap id="userItemList" type="first.vassystem.dto.UserItemList">
+ 		<result property = "itemId"			column = "item_id"/>
+ 		<result property = "itemUniqueId" 	column = "item_uniqueID"/>
+ 		<result property = "remainTime" 	column = "remain_time"/>
+ 		<result property = "makeDate" 		column = "make_dt"/>
+ 		<result property = "endDate" 		column = "end_dt"/>
+ 		<result property = "lastDate" 		column = "last_mod_dt"/>
+ 		<result property = "itemUsage" 		column = "item_usage"/>
+ 		<result property = "itemNm" 		column = "item_nm"/>
+ 		<result property = "itemCategory" 	column = "item_category"/>
+ 		<result property = "itemType" 		column = "item_type"/>
+ 		<result property = "itemPrice" 		column = "item_price"/>
+ 		<result property = "unit_cd" 		column = "unit_cd"/> 		
+ 		<result property = "itemDesc" 		column = "item_desc"/>
+ 		<result property = "itemValue" 		column = "item_value"/>
+ 		<result property = "itemPeriodFlag" column = "item_period_flag"/>
+ 		<result property = "itemPeriod" 	column = "item_period"/>
+ 		<result property = "itemDupFlag"	column = "item_dup_flag"/>
+ 		<result property = "itemNewFlag" 	column = "item_new_flag"/>		
+ 		<result property = "itemImgNo" 		column = "item_img_no"/>
+	</resultMap>
+	
+	<select id="selectUserItemList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="userItemList"> 
+	{ 
+		call abn_getUserItem (
+			 #{inParam01,	mode=IN, 	jdbcType=INTEGER} 	<!-- job_type_cd -->
+			,#{inParam02,	mode=IN, 	jdbcType=INTEGER}	<!-- user_account-->
+		)
+	}
+	</select>
+	
+	<select id="updateUserPeriodItem" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_mgmtUserPeriodItem (
+			 #{inParam01,	mode=IN, 	jdbcType=INTEGER} 	<!-- user_account -->
+			,#{inParam02,	mode=IN, 	jdbcType=INTEGER}	<!-- item_Uniqueid-->
+			,#{inParam03,	mode=IN, 	jdbcType=INTEGER}	<!-- item_id-->
+			,#{outParam01,	mode=OUT, 	jdbcType=INTEGER}	<!-- result-->
+		)
+	}
+	</select>
+</mapper>

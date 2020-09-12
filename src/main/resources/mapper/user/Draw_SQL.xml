@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="draw"> 
+
+	<resultMap id="drawList" type="first.vassystem.packet.DrawMgmtPacket">
+ 		<result property = "result" 	column = "resultCd"/>
+ 		<result property = "drawList" 	column = "result_json" typeHandler="first.common.util.JsonTypeHandler"/>
+	</resultMap>
+	
+	<resultMap id="drawShopList" type="first.vassystem.dto.DrawShopList">
+ 		<result property = "drawTypeCd" column = "draw_type_cd"/>
+ 		<result property = "drawId" 	column = "draw_id"/>
+ 		<result property = "drawNm" 	column = "draw_nm"/>
+ 		<result property = "unitCd" 	column = "unit_cd"/>
+ 		<result property = "drawPrice" 	column = "draw_price"/>
+ 		<result property = "disPrice" 	column = "dis_price"/>
+ 		<result property = "rwdDesc" 	column = "draw_desc"/>
+ 		<result property = "imgNo" 		column = "img_no"/>
+	</resultMap>
+	
+	<select id="selectDrawList" statementType="CALLABLE" parameterType="int" resultMap ="drawShopList"> 
+	{ 
+		call abn_getDrawList (
+			#{inParam01,mode=IN,jdbcType=INTEGER},
+			#{inParam02,mode=IN,jdbcType=INTEGER},
+			#{inParam03,mode=IN,jdbcType=INTEGER}
+		)
+	}
+	</select>
+
+	<select id="mgmtDraw" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="drawList"> 
+	{ 
+		call abn_MgmtUserDraw (
+								#{inParam01,mode=IN,jdbcType=INTEGER}
+								,#{inParam02,mode=IN,jdbcType=INTEGER}
+								,#{inParam03,mode=IN,jdbcType=INTEGER}
+							   )
+	}
+	</select>
+</mapper>
