@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import first.common.exception.AccessDeniedException;
 import first.common.util.ReturnType;
 import first.vassystem.packet.HeaderPacket;
-import first.vassystem.packet.ItemListPacket;
 import first.vassystem.packet.ItemListWithUserPacket;
 import first.vassystem.packet.ItemMgmtPacket;
-import first.vassystem.packet.ShopListPacket;
+import first.vassystem.packet.ItemPacket;
 import first.vassystem.service.MemberService;
 import first.vassystem.service.ShopService;
 
@@ -37,46 +36,26 @@ public class ShopController {
 		return shopService.getItemList(user_account);
 	}
 	
-	/* ���������ȸ */
-	@RequestMapping(value="/shopList.do", produces = "application/json")
-	@ResponseBody
-	public ShopListPacket shopList(
-			@RequestParam int device_type
-			,@RequestParam int payment_type
-			) throws Exception {
-		
-		return shopService.getShopList(device_type, payment_type);
-	}
-	
-	/* ������ȸ */
-	@RequestMapping(value="/shopListByCategory.do", produces = "application/json")
-	@ResponseBody
-	public ItemListPacket shopListByCategory(
-			@RequestParam int shop_category
-			) throws Exception {
-		
-		return shopService.getShopListByCategory(shop_category);
-	}
-	
-	/* ������ ���� */
+	/* Buy Item */
 	@RequestMapping(value="/buyItem.do", produces = "application/json")
 	@ResponseBody
-	public ItemMgmtPacket buyItem(
+	public ItemPacket buyItem(
 			 @RequestParam int user_account
-			,@RequestParam String sid
+			//,@RequestParam String sid
 			,@RequestParam int item_id
 			,@RequestParam int item_cnt
 			) throws Exception {
 		
 		//session check
+		/*
 		if(memberService.checkSession(user_account, sid) == 0) {
 			throw new AccessDeniedException();
 		}
-				
+		*/		
 		return shopService.buyItem(user_account, item_id, item_cnt);
 	}
 	
-	/* ������ ��� */
+	/* Use Item */
 	@RequestMapping(value="/useItem.do", produces = "application/json")
 	@ResponseBody
 	public ItemMgmtPacket useItem(
@@ -87,10 +66,11 @@ public class ShopController {
 			) throws Exception {
 		
 		//session check
+		/*
 		if(memberService.checkSession(user_account, sid) == 0) {
 			throw new AccessDeniedException();
 		}
-				
+		*/			
 		return shopService.useItem(user_account, item_unique_id, item_cnt);
 	}
 	

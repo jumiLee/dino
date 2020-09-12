@@ -54,7 +54,8 @@
 	<select id="selectItemList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="itemList"> 
 	{ 
 		call abn_getItemList (
-			#{inParam01, jdbcType = INTEGER, mode = IN}
+			#{inParam01, jdbcType = INTEGER, mode = IN}	<!-- job Code -->
+			,#{inParam02, jdbcType = INTEGER, mode = IN} <!-- Item_ID -->
 		)
 	}
 	</select>
@@ -68,7 +69,8 @@
 								,#{inParam04,mode=IN,jdbcType=INTEGER}		<!-- item_cnt -->
 								,null										<!-- payment_amt -->
 								,#{outParam01,	 mode=OUT,jdbcType=INTEGER}	<!-- result_code -->
-								,#{outStrParam01,mode=OUT,jdbcType=VARCHAR}<!-- result message -->
+								,#{outStrParam01,mode=OUT,jdbcType=VARCHAR} <!-- result message -->
+								,#{outParam02,	 mode=OUT,jdbcType=INTEGER}	<!-- item_uniqueId -->
 								)
 	}
 	</select>
