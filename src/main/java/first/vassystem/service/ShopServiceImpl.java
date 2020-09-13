@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import first.common.util.ParamVO;
 import first.vassystem.dao.ShopDAO;
 import first.vassystem.dao.UserInfoDAO;
+import first.vassystem.dao.UserMonsterDAO;
 import first.vassystem.dto.ItemList;
 import first.vassystem.packet.ItemListWithUserPacket;
-import first.vassystem.packet.ItemMgmtPacket;
 import first.vassystem.packet.ItemPacket;
+import first.vassystem.packet.MonsterPacket;
 
 @Service 
 public class ShopServiceImpl implements ShopService {
@@ -25,6 +26,10 @@ public class ShopServiceImpl implements ShopService {
 	
 	@Resource(name="UserInfoDAO") 
 	private UserInfoDAO userInfoDAO; 
+	
+	@Resource(name="UserMonsterDAO") 
+	private UserMonsterDAO userMonsterDAO; 
+	
 	
 	private static final int ITEM_BUY = 1;
 	
@@ -95,16 +100,18 @@ public class ShopServiceImpl implements ShopService {
 	
 	/* Use Item   */
 	@Override
-	public ItemMgmtPacket useItem(int user_account, int item_unique_id, int item_cnt) throws Exception {
+	public MonsterPacket useItem(int user_account, int mon_id, int user_mon_sn, int item_unique_id) throws Exception {
 		
-		ItemMgmtPacket itemMgmtPacket = new ItemMgmtPacket();
+		MonsterPacket monsterPacket = new MonsterPacket();
 		int resultCd = 0;
 		String resultMsg = "";
 		
 		ParamVO vo = new ParamVO(); 
 		vo.setInParam01(user_account);
 		vo.setInParam02(item_unique_id);
-		vo.setInParam03(item_cnt);
+		vo.setInParam03(mon_id);
+		vo.setInParam04(user_mon_sn);
+		vo.setInParam05(1);
 		
 		shopDAO.useItem(vo);		
 		
@@ -122,9 +129,14 @@ public class ShopServiceImpl implements ShopService {
 			break;
 		}
 		
-		itemMgmtPacket.userDetail = userInfoDAO.selectUserDetail(user_account);
-		itemMgmtPacket.setHeader(user_account,resultCd,resultMsg);
+		ParamVO paramVO = new ParamVO(); 
+		paramVO.setInParam01(1); 
+		paramVO.setInParam02(user_account);
+		paramVO.setInParam03(user_mon_sn);
 		
-		return itemMgmtPacket;
+		monsterPacket.userMonsterList = userMonsterDAO.selectUserMonster(paramVO);
+		monsterPacket.setHeader(user_account,resultCd,resultMsg);
+		
+		return monsterPacket;
 	}
 }

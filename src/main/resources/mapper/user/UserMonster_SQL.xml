@@ -7,11 +7,12 @@
  		<result property = "monId"			column = "mon_id"/>
  		<result property = "monNm" 			column = "mon_nm"/>
  		<result property = "monType" 		column = "mon_type"/>
- 		<result property = "monMaxExp" 		column = "mon_max_exp"/>
+ 		<result property = "monMaxLv" 		column = "mon_max_lv"/>
  		<result property = "monDesc" 		column = "mon_desc"/>
  		<result property = "userMonSn" 		column = "user_mon_sn"/>
  		<result property = "monLevel" 		column = "mon_level"/>
  		<result property = "monExp" 		column = "mon_exp"/>
+ 		<result property = "needExp" 		column = "mon_need_exp"/>
  		<result property = "monColorType" 	column = "mon_color_type"/>
  		<result property = "merchantId" 	column = "mct_id"/>
  		<result property = "merchantNm" 	column = "mct_nm"/> 		
