@@ -12,8 +12,8 @@ import first.common.exception.AccessDeniedException;
 import first.common.util.ReturnType;
 import first.vassystem.packet.HeaderPacket;
 import first.vassystem.packet.ItemListWithUserPacket;
-import first.vassystem.packet.ItemMgmtPacket;
 import first.vassystem.packet.ItemPacket;
+import first.vassystem.packet.MonsterPacket;
 import first.vassystem.service.MemberService;
 import first.vassystem.service.ShopService;
 
@@ -58,11 +58,11 @@ public class ShopController {
 	/* Use Item */
 	@RequestMapping(value="/useItem.do", produces = "application/json")
 	@ResponseBody
-	public ItemMgmtPacket useItem(
+	public MonsterPacket useItem(
 			 @RequestParam int user_account
-			,@RequestParam String sid
+			,@RequestParam int mon_id
+			,@RequestParam int user_mon_sn
 			,@RequestParam int item_unique_id
-			,@RequestParam int item_cnt
 			) throws Exception {
 		
 		//session check
@@ -71,7 +71,7 @@ public class ShopController {
 			throw new AccessDeniedException();
 		}
 		*/			
-		return shopService.useItem(user_account, item_unique_id, item_cnt);
+		return shopService.useItem(user_account, mon_id, user_mon_sn, item_unique_id);
 	}
 	
 	@ExceptionHandler(value = AccessDeniedException.class)  

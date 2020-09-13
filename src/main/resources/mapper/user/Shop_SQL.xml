@@ -81,7 +81,9 @@
 		call abn_MgmtItem_use (
 								 #{inParam01,	mode=IN,jdbcType=INTEGER}	<!-- user_account-->
 								,#{inParam02,	mode=IN,jdbcType=INTEGER}	<!-- item_unique_id -->
-								,#{inParam03,	mode=IN,jdbcType=INTEGER}	<!-- item_cnt -->
+								,#{inParam03,	mode=IN,jdbcType=INTEGER}	<!-- mon_id -->
+								,#{inParam04,	mode=IN,jdbcType=INTEGER}	<!-- user_mon_sn -->
+								,#{inParam05,	mode=IN,jdbcType=INTEGER}	<!-- item_cnt -->
 								,#{outParam01,	mode=OUT,jdbcType=INTEGER}	<!-- result_code -->
 								)
 	}

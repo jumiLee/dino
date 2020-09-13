@@ -11,8 +11,8 @@ import first.vassystem.dto.UserMonsterList;
 @Repository("UserMonsterDAO")
 public class UserMonsterDAO extends AbstractDAO {
 
-	public UserMonsterList selectUserMonster(int user_account) { 
-		return (UserMonsterList) selectOne("monster.selectUserDetail", user_account); 
+	public UserMonsterList selectUserMonster(ParamVO paramVO) { 
+		return (UserMonsterList) selectOne("monster.selectUserMonsterList", paramVO); 
 	}
 	
 	@SuppressWarnings("unchecked")
