@@ -27,6 +27,8 @@ public class UserMainServiceImpl implements UserMainService {
 	@Resource(name="UserMonsterDAO") 
 	private UserMonsterDAO userMonsterDAO;	
 	
+	private static final int MONSTER_LIST_SEARCH_JOB = 1;
+	
 	/**
 	 * main page
 	 */
@@ -43,7 +45,7 @@ public class UserMainServiceImpl implements UserMainService {
 			
 		//user monster info
 		ParamVO vo = new ParamVO(); 
-		vo.setInParam01(1);
+		vo.setInParam01(MONSTER_LIST_SEARCH_JOB);
 		vo.setInParam02(user_account);
 		
 		userMainPacket.userMonsterList = userMonsterDAO.selectUserMonsterList(vo);

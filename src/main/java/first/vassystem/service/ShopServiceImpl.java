@@ -32,6 +32,7 @@ public class ShopServiceImpl implements ShopService {
 	
 	
 	private static final int ITEM_BUY = 1;
+	private static final int MONSTER_LIST_SEARCH_JOB = 1;
 	
 	/* Item List */
 	@Override
@@ -130,7 +131,7 @@ public class ShopServiceImpl implements ShopService {
 		}
 		
 		ParamVO paramVO = new ParamVO(); 
-		paramVO.setInParam01(1); 
+		paramVO.setInParam01(MONSTER_LIST_SEARCH_JOB); 
 		paramVO.setInParam02(user_account);
 		paramVO.setInParam03(user_mon_sn);
 		

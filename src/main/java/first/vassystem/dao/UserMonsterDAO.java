@@ -19,4 +19,8 @@ public class UserMonsterDAO extends AbstractDAO {
 	public List<UserMonsterList> selectUserMonsterList(ParamVO paramVO) throws Exception{ 
 		return (List<UserMonsterList>)selectList("monster.selectUserMonsterList", paramVO); 
 	}
+	
+	public ParamVO addMonster(ParamVO paramVO) throws Exception{ 
+		return (ParamVO) selectOne("monster.addUserMonster", paramVO); 
+	}
 }
