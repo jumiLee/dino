@@ -22,10 +22,10 @@ public class UserMonsterServiceImpl implements UserMonsterService {
 	private static final int MONSTER_BOOK_SEARCH_JOB = 2;
 	
 	/**
-	 * Get Monster List
+	 * Get Monster Book List
 	 */
 	@Override
-	public MonsterBookPacket getUserMonsterList(int job_type_cd, int user_account) throws Exception {
+	public MonsterBookPacket getUserMonsterBookList(int user_account) throws Exception {
 		
 		MonsterBookPacket monsterBookPacket = new MonsterBookPacket();
 		int resultCd = 0;
@@ -34,6 +34,7 @@ public class UserMonsterServiceImpl implements UserMonsterService {
 		ParamVO vo = new ParamVO(); 
 		vo.setInParam01(MONSTER_BOOK_SEARCH_JOB);
 		vo.setInParam02(user_account);
+		vo.setInParam03(0);
 		
 		monsterBookPacket.userMonsterBookList = userMonsterDAO.selectUserMonsterList(vo);		
 		monsterBookPacket.setHeader(user_account,resultCd,resultMsg);
