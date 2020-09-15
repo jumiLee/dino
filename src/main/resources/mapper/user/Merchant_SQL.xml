@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="merchant"> 
+
+	<resultMap id="merchant" type="first.vassystem.dto.Merchant">
+ 		<result property = "mctId" 			column = "mct_id"/>
+ 		<result property = "mctName" 		column = "mct_nm"/>
+ 		<result property = "mctEmail" 		column = "mct_email"/>
+ 		<result property = "mctPwd" 		column = "mct_pwd"/>
+ 		<result property = "mct_desc" 		column = "mct_desc"/>
+ 		<result property = "createDate" 	column = "create_dt"/>
+ 		<result property = "lastModifyDate" column = "last_mod_dt"/>
+	</resultMap>
+
+	<select id="selectMerchant" parameterType="first.common.util.ParamVO" resultMap ="merchant"> 
+		select 	t1.mct_id as mct_id
+				,t1.mct_nm as mct_nm
+        		,t1.mct_email as mct_email
+        		,t1.mct_pwd as mct_pwd
+         		,t1.mct_desc as mct_desc
+        		,t1.create_dt as create_dt
+        		,t1.last_mod_dt as last_mod_dt
+		from 	mst_merchant t1
+		where 	mct_email = #{inStrParam01,jdbcType=VARCHAR}
+	</select>
+</mapper>
