@@ -30,10 +30,9 @@ public class UserMonsterController {
 	@RequestMapping(value="/userMonsterBook.do", produces = "application/json")
 	@ResponseBody
 	public MonsterBookPacket userMonsterBook(
-			 @RequestParam int user_account
-			,@RequestParam int job_type_cd) throws Exception {
+			 @RequestParam int user_account) throws Exception {
 				
-		return userMonsterService.getUserMonsterList(job_type_cd, user_account);
+		return userMonsterService.getUserMonsterBookList(user_account);
 	}
 	
 	/* Add Monster */

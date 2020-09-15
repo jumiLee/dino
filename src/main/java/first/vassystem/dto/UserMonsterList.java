@@ -12,4 +12,5 @@ public class UserMonsterList extends Monster{
 	public int merchantId; 		//offline zone id
 	public String merchantNm;	//offline zone name
 	public Date createDate;		//획득일자 
+	public int checkFlag;		//획득여부(1:획득 o, 2:획득x)
 }

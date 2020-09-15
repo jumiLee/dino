@@ -17,6 +17,7 @@
  		<result property = "merchantId" 	column = "mct_id"/>
  		<result property = "merchantNm" 	column = "mct_nm"/> 		
  		<result property = "createDate" 	column = "create_dt"/>
+ 		<result property = "checkFlag" 		column = "check_flag"/>
 	</resultMap>
 	
 	<select id="selectUserMonsterList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="userMonsterList"> 
