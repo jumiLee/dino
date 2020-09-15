@@ -13,31 +13,6 @@
  		<result property = "monsterNewFlag" column = "mon_new"/>
 	</resultMap>
 	
-	<resultMap id="userScore" type="first.vassystem.dto.UserScore">
- 		<result property = "today_total_gold" 		column = "today_total_gold"/>
- 		<result property = "today_total_bat_cnt" 	column = "today_total_bat_cnt"/>
- 		<result property = "today_total_win_cnt" 	column = "today_total_win_cnt"/>
- 		<result property = "today_total_lose_cnt" 	column = "today_total_lose_cnt"/>
- 		<result property = "total_bat_cnt" 			column = "total_bat_cnt"/>
- 		<result property = "total_win_cnt" 			column = "total_win_cnt"/>
- 		<result property = "total_lose_cnt" 		column = "total_lose_cnt"/>
- 		<result property = "total_bat_cnt2" 		column = "total_bat_cnt2"/>
- 		<result property = "total_win_cnt2" 		column = "total_win_cnt2"/>
- 		<result property = "total_lose_cnt2" 		column = "total_lose_cnt2"/>
- 		<result property = "total_bat_cnt3" 		column = "total_bat_cnt3"/>
- 		<result property = "total_win_cnt3" 		column = "total_win_cnt3"/>
- 		<result property = "total_lose_cnt3" 		column = "total_lose_cnt3"/>
- 		<result property = "user_rank" 				column = "user_rank"/>
-	</resultMap>		
-	
-	<resultMap id="userAPPacket" type="first.vassystem.packet.UserAPPacket">
-	 	<result property = "resultCd" 		column = "resultCd"/>	
- 		<result property = "userAP.maxAP" 	column = "max_ap"/>
- 		<result property = "userAP.curAP" 	column = "cur_ap"/>
- 		<result property = "amt" 			column = "amt"/>
- 		<result property = "safeMoney" 		column = "safe_money"/>
- 	</resultMap>		
-	
 	<select id="selectUserDetail" statementType="CALLABLE" parameterType="int" resultMap ="userDetail"> 
 	{ 
 		call abn_getUserDetail (
@@ -62,14 +37,6 @@
 	}
 	</select>
 	
-	<select id="selectUserScore" statementType="CALLABLE" parameterType="int" resultMap ="userScore"> 
-	{ 
-		call abn_getUserScore (
-			#{user_account, jdbcType = INTEGER, mode = IN}
-		)
-	}
-	</select>
-	
 	<update id="updateSid" parameterType="first.common.util.ParamVO"> 	
 		update mst_user
 		   set sid = #{inStrParam01, jdbcType = VARCHAR}
@@ -81,13 +48,5 @@
 		 from  mst_user 
 		where  user_account = #{inParam01, jdbcType = INTEGER}
 		  and  sid = #{inStrParam01, jdbcType = VARCHAR}
-	</select>
-	
-	<select id="chargeUserGold" statementType="CALLABLE" parameterType="int" resultMap ="userAPPacket"> 
-	{ 
-		call abn_chargeFreeGold (
-			#{user_account, jdbcType = INTEGER, mode = IN}
-		)
-	}
 	</select>
 </mapper>
