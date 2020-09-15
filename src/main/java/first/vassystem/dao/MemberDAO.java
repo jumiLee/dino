@@ -16,8 +16,4 @@ public class MemberDAO extends AbstractDAO {
 	public Member registerMember(ParamVO paramVO) throws Exception{ 
 		return (Member) selectOne("member.registerMember", paramVO); 
 	}
-	
-	public void memberLog(int user_account) throws Exception{ 
-		selectOne("member.memberLog", user_account); 
-	}
 }

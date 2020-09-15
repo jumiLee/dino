@@ -59,12 +59,6 @@ public class MemberServiceImpl implements MemberService {
 			resultMsg = "No member exist";
 		}		
 		loginCheckPacket.setHeader(user_account, resultCd, resultMsg);
-		
-		//login log and update
-		if(resultCd == 0) {
-			//call procedure for log
-			memberDAO.memberLog(user_account);
-		}
 				
 		return loginCheckPacket;
 	}	

@@ -31,13 +31,4 @@
 		)
 	}
 	</select>
-	
-	<select id="memberLog" statementType="CALLABLE" parameterType="int"> 
-	{ 
-		call abn_userLog (
-			1 
-			,#{user_account, jdbcType = INTEGER, mode = IN}
-		)
-	}
-	</select>
 </mapper>
