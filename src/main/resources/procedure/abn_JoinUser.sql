@@ -12,26 +12,26 @@ BEGIN
 	DECLARE $V_USER_COIN  INT;
     DECLARE $V_USER_GOLD  INT;
     DECLARE $V_USER_POINT  INT;
-    DECLARE $V_USER_SAFE_LIMIT  INT;	-- 금고보유최대액 
     DECLARE $V_RESULT_ITEM INT;
 	DECLARE $V_RESULT_ITEM_MSG VARCHAR(100);
     DECLARE $V_ITEM_UNIQUEID BIGINT;	-- 생성된 아이템 고유번호 
-    DECLARE $V_AP_RECOVER_CNT INT;
-
+    DECLARE $V_MON_ID INT;
+	DECLARE $V_USER_MON_SN INT;
+    DECLARE $V_RESULT_MON INT;
+    
     SET $V_RESULT = 0;
 	SET $V_USER_ACCOUNT =0;
 	SET $V_EXIST_CH_USER = 0;   
-
+    
 --  default value setting 
-	select sum(ap_recover_cnt), sum(default_gold), sum(ifnull(default_point,default_point_AI)), sum(default_coin),sum(default_safe_limit) 
-      into	$V_AP_RECOVER_CNT, $V_USER_GOLD, $V_USER_POINT, $V_USER_COIN, $V_USER_SAFE_LIMIT
+	select 	sum(default_gold), sum(ifnull(default_point,default_point_AI)), sum(default_coin), sum(mon_id)
+      into	$V_USER_GOLD, $V_USER_POINT, $V_USER_COIN, $V_MON_ID
 	  from (    
-			select 	case when var_id='AP_RECOVER_CNT' then var_value end ap_recover_cnt,
-					case when var_id='DEFAULT_GOLD' then var_value end default_gold,
+			select 	case when var_id='DEFAULT_GOLD' then var_value end default_gold,
 					case when var_id='DEFAULT_POINT' and $V_USER_LEVEL=1 then var_value end default_point,
                     case when var_id='DEFAULT_COIN' then var_value end default_coin,
-					case when var_id='DEFAULT_SAFE_LIMIT' then var_value end default_safe_limit,
-                    case when var_id='DEFAULT_POINT_AI' and $V_USER_LEVEL=3 then var_value  end default_point_AI
+                    case when var_id='DEFAULT_POINT_AI' and $V_USER_LEVEL=3 then var_value  end default_point_AI,
+                    case when var_id='DEFAULT_MON_ID' then var_value end mon_id
 			 from 	mgr_variable
 			where 	var_category =1
             ) t1;
@@ -61,35 +61,10 @@ BEGIN
         INSERT INTO user_detail (user_account, user_coin, user_gold, user_point, user_level, user_rank, win_cnt, lose_cnt, friend_cnt, user_score,user_exp)
 		VALUES ($V_USER_ACCOUNT, $V_USER_COIN, $V_USER_GOLD, $V_USER_POINT, $V_USER_LEVEL, 0, 0, 0, 0, 0,0);
         
-        -- 2-4) 사용자 금고정보 생성 (USER_SAFE)
-        INSERT INTO user_safe (user_account, user_gold, safe_limit) 
-        VALUES ($V_USER_ACCOUNT, 0, $V_USER_SAFE_LIMIT);
-        
-        -- 2-5) 사용자 금고이력정보 생성 (USER_SAFE_HIST)
-        INSERT INTO user_safe_hist (user_account, safe_job_type, user_gold, balance, issue_dt) 
-        VALUES ($V_USER_ACCOUNT, 3, 0, 0, now());
-        
-        -- 2-6) 기본충전 정보 생성 (USER_AP)
-        INSERT INTO user_ap (user_account,ap_type,max_AP,cur_AP,last_dt)
-		VALUES ($V_USER_ACCOUNT,1,$V_AP_RECOVER_CNT,$V_AP_RECOVER_CNT,now());
-
-        -- 2-7) 기본 캐릭터 아이템 지급
-        Call abn_MgmtItem_out (5, $V_USER_ACCOUNT, 6110001, 1 , 0, $V_RESULT_ITEM , $V_RESULT_ITEM_MSG);
-        Call abn_MgmtItem_out (5, $V_USER_ACCOUNT, 6110002, 1 , 0, $V_RESULT_ITEM , $V_RESULT_ITEM_MSG);
-        Call abn_MgmtItem_out (5, $V_USER_ACCOUNT, 6110003, 1 , 0, $V_RESULT_ITEM , $V_RESULT_ITEM_MSG);
-        Call abn_MgmtItem_out (5, $V_USER_ACCOUNT, 6110004, 1 , 0, $V_RESULT_ITEM , $V_RESULT_ITEM_MSG);
-        Call abn_MgmtItem_out (5, $V_USER_ACCOUNT, 6110005, 1 , 0, $V_RESULT_ITEM , $V_RESULT_ITEM_MSG);
-        
-        -- 2-8) 기본캐릭터 장착처리
-        SET $V_ITEM_UNIQUEID = (SELECT item_uniqueId FROM user_item where user_account=$V_USER_ACCOUNT and item_id=6110001);
-        call abn_MgmtItem_use ($V_USER_ACCOUNT, $V_ITEM_UNIQUEID, 1, $V_RESULT_ITEM); 
-	END IF;
-
-	/* 이력추가  */
-	IF ($V_RESULT = 0 ) Then
-		Call Log_BaseLog ($V_USER_ACCOUNT,$V_USER_ACCOUNT, 1,1,0,null, null, null, null, null);	-- 계정생성
-        Call Log_BaseLog ($V_USER_ACCOUNT,$V_USER_ACCOUNT, 2, 1, 1, 1, $V_USER_GOLD, null, null, null);	-- Gold 기본지급
-        Call Log_BaseLog ($V_USER_ACCOUNT,$V_USER_ACCOUNT, 2, 1, 2, 1, $V_USER_COIN, null, null, null);	-- Coin 기본지급
-        Call Log_BaseLog ($V_USER_ACCOUNT,$V_USER_ACCOUNT, 2, 1, 3, 1, $V_USER_POINT, null, null, null);-- Point 기본지급
+        -- 2-4) 기본 몬스터 등록 
+        call abn_AddUserMonster( $V_USER_ACCOUNT
+								,$V_MON_ID
+                                ,0			-- defau;t monster has no merchant ID
+                                ,$V_RESULT_MON, $V_USER_MON_SN);
 	END IF;
 END

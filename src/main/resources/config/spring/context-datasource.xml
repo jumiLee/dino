@@ -8,7 +8,6 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/> 
-		<!--<property name="url" value="jdbc:mysql://127.0.0.1:3306/sd?autoReconnect=true&amp;validationQuery=select 1&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/>--> <!-- local test -->
 		<property name="url" value="jdbc:mysql://edeninstance1.cqka8xbywsmf.ap-northeast-2.rds.amazonaws.com:33062/dn?autoReconnect=true&amp;validationQuery=select 1&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC"/> <!-- aws -->
 		<property name="username" value="edenweb"/> 
 		<property name="password" value="dpeps1234"/> 
