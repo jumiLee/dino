@@ -43,7 +43,13 @@ BEGIN
   
   -- 1. 아이템 구매 조건 체크 (구매인 경우만) 
 	IF($V_TRADE_CD = 1) THEN
-		-- 1-2) 구매할 코인 및 골드가 있는지 체크
+		-- 1-1) 구매하려는 아이템이 있는지 체크
+	    IF((select count(item_id) from mst_item where item_id=$V_ITEM_ID and use_flag=1) = 0 ) then
+			SET $V_RESULT = -10;
+			SET $V_RESULT_MSG = 'No such Item';
+		END IF;
+        
+        -- 1-2) 구매할 코인 및 골드가 있는지 체크
 		SET $V_MY_MONEY= (select  CASE 
 									WHEN $V_UNIT_CD = 1 THEN user_gold 
 									WHEN $V_UNIT_CD = 2 THEN user_coin
@@ -57,6 +63,8 @@ BEGIN
 			SET $V_RESULT = -11;
 			SET $V_RESULT_MSG = 'Lack of Money';
 		END IF;
+        
+        
 	END IF;
     
     -- 2. 사용자 아이템 정보 업데이트 (USER_ITEM)	
