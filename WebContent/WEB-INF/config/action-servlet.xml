@@ -28,5 +28,13 @@
     	p:viewClass="org.springframework.web.servlet.view.JstlView" 
     	p:prefix="/WEB-INF/jsp/" p:suffix=".jsp">
    	</bean>
-   	
+	
+   	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"> 
+   		<property name="order" value="2" /> 
+   		<property name="cache" value="true" /> 
+   		<property name="suffix" value=".ftl" /> 
+   		<property name="contentType" value="text/html; charset=UTF-8" /> 
+   		<property name="exposeSpringMacroHelpers" value="true" /> 
+   	</bean>
+
 </beans>
