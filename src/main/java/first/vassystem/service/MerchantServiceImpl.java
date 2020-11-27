@@ -1,5 +1,8 @@
 package first.vassystem.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 import first.common.util.ParamVO;
 import first.vassystem.dao.MerchantDAO;
 import first.vassystem.dto.Merchant;
+import first.vassystem.dto.MerchantStat;
 import first.vassystem.packet.MerchantInfoPacket;
 
 @Service 
@@ -50,5 +54,16 @@ public class MerchantServiceImpl implements MerchantService {
 		merchantInfoPacket.setHeader(user_account, resultCd, resultMsg);		
 				
 		return merchantInfoPacket;
+	}	
+	
+	@Override
+	public List<MerchantStat> merchantStat() throws Exception {
+		
+		List<MerchantStat> merchantStat = merchantDAO.selectMerchantStat();
+		
+		if(merchantStat.size() == 0) {	
+			return new ArrayList<MerchantStat>();
+		}
+		return merchantStat;
 	}	
 }

@@ -12,6 +12,13 @@
  		<result property = "createDate" 	column = "create_dt"/>
  		<result property = "lastModifyDate" column = "last_mod_dt"/>
 	</resultMap>
+	
+	<resultMap id="MerchantStat" type="first.vassystem.dto.MerchantStat" extends="merchant">
+ 		<result property = "mctAddr" 		column = "mct_addr"/>
+ 		<result property = "mctIcon" 		column = "mct_icon"/>
+ 		<result property = "monsterCount" 	column = "mon_cnt"/>
+ 		<result property = "userCount" 		column = "user_cnt"/>
+	</resultMap>
 
 	<select id="selectMerchant" parameterType="first.common.util.ParamVO" resultMap ="merchant"> 
 		select 	t1.mct_id as mct_id
@@ -23,5 +30,20 @@
         		,t1.last_mod_dt as last_mod_dt
 		from 	mst_merchant t1
 		where 	mct_email = #{inStrParam01,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectMerchantStat" resultMap ="MerchantStat"> 
+		select 	t1.mct_id as mct_id
+				,t1.mct_nm as mct_nm
+		        ,t1.mct_addr as mct_addr
+		        ,t1.mct_icon as mct_icon
+		        ,t1.create_dt as create_dt
+		        ,count(t2.mon_id) as mon_cnt
+		        ,count(distinct t2.user_account) as user_cnt
+		  from 	mst_merchant t1 left join user_monster t2
+            on 	t1.mct_id = t2.mct_id 
+		 where 	t1.mct_id <![CDATA[ <>  ]]>0 
+		 group by t1.mct_id, t1.mct_nm, t1.mct_addr, t1.mct_icon, t1.create_dt
+		 order by t1.mct_id
 	</select>
 </mapper>
