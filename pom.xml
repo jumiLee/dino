@@ -8,6 +8,7 @@
 		<org.springframework-version>4.3.2.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<log4j.version>2.11.0</log4j.version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -54,6 +55,12 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency> 
+			<groupId>org.apache.logging.log4j</groupId> 
+			<artifactId>log4j-core</artifactId> 
+			<version>${log4j.version}</version> 
+		</dependency>
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -76,9 +83,11 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<scope>runtime</scope>
+			<!-- <scope>runtime</scope>  -->
 		</dependency>
 
+
+	
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -169,6 +178,18 @@
 			<version>3.4</version>
 		</dependency>
 		
+		<!-- freemarker -->
+		<dependency> 
+			<groupId>org.freemarker</groupId> 
+			<artifactId>freemarker-gae</artifactId> 
+			<version>2.3.23</version> 
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-logging</groupId>
+             <artifactId>commons-logging</artifactId>
+             <version>1.1.1</version>
+        </dependency>
 	</dependencies>
   <build>
     <plugins>

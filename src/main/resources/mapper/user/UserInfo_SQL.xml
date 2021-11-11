@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="userMain"> 
+
+	<resultMap id="userDetail" type="first.vassystem.dto.UserDetail">
+		<result property = "account" 	column = "user_account"/>
+ 		<result property = "point" 		column = "user_point"/> 		
+ 		<result property = "nickname" 	column = "nickname"/> 		
+	</resultMap>
+	
+	<resultMap id="userNotice" type="first.vassystem.dto.UserNotice"> 		
+ 		<result property = "monsterNewFlag" column = "mon_new"/>
+	</resultMap>
+	
+	<select id="selectUserDetail" statementType="CALLABLE" parameterType="int" resultMap ="userDetail"> 
+	{ 
+		call abn_getUserDetail (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+
+	<select id="selectUserNotice" statementType="CALLABLE" parameterType="int" resultMap ="userNotice"> 
+	{ 
+		call abn_getNoticeInfo (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<select id="selectUserAttend" statementType="CALLABLE" parameterType="int" resultType ="int"> 
+	{ 
+		call abn_getAttendInfo (
+			#{user_account, jdbcType = INTEGER, mode = IN}
+		)
+	}
+	</select>
+	
+	<update id="updateSid" parameterType="first.common.util.ParamVO"> 	
+		update mst_user
+		   set sid = #{inStrParam01, jdbcType = VARCHAR}
+		 where user_account = #{inParam01, jdbcType = INTEGER}
+	</update>
+	
+	<select id="selectUserBySid" parameterType="first.common.util.ParamVO" resultType ="int"> 
+		select count(user_account) as cnt 
+		 from  mst_user 
+		where  user_account = #{inParam01, jdbcType = INTEGER}
+		  and  sid = #{inStrParam01, jdbcType = VARCHAR}
+	</select>
+</mapper>

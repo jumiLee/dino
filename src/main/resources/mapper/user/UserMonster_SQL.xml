@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="monster"> 
+
+	<resultMap id="userMonsterList" type="first.vassystem.dto.UserMonsterList">
+ 		<result property = "monId"			column = "mon_id"/>
+ 		<result property = "monNm" 			column = "mon_nm"/>
+ 		<result property = "monType" 		column = "mon_type"/>
+ 		<result property = "monMaxLv" 		column = "mon_max_lv"/>
+ 		<result property = "monDesc" 		column = "mon_desc"/>
+ 		<result property = "userMonSn" 		column = "user_mon_sn"/>
+ 		<result property = "monLevel" 		column = "mon_level"/>
+ 		<result property = "monExp" 		column = "mon_exp"/>
+ 		<result property = "needExp" 		column = "mon_need_exp"/>
+ 		<result property = "monColorType" 	column = "mon_color_type"/>
+ 		<result property = "merchantId" 	column = "mct_id"/>
+ 		<result property = "merchantNm" 	column = "mct_nm"/> 		
+ 		<result property = "createDate" 	column = "create_dt"/>
+ 		<result property = "checkFlag" 		column = "check_flag"/>
+	</resultMap>
+	
+	<select id="selectUserMonsterList" statementType="CALLABLE" parameterType="first.common.util.ParamVO" resultMap ="userMonsterList"> 
+	{ 
+		call abn_getMonList (
+			 #{inParam01,	mode=IN, 	jdbcType=INTEGER} 	<!-- job_type_cd -->
+			,#{inParam02,	mode=IN, 	jdbcType=INTEGER}	<!-- user_account-->
+			,#{inParam03,	mode=IN, 	jdbcType=INTEGER}	<!-- user_mon_sn-->			
+		)
+	}
+	</select>
+	
+	<select id="addUserMonster" statementType="CALLABLE" parameterType="first.common.util.ParamVO"> 
+	{ 
+		call abn_AddUserMonster (
+								 #{inParam01,mode=IN,jdbcType=INTEGER} 		<!-- user_account -->
+								,#{inParam02,mode=IN,jdbcType=INTEGER}		<!-- mon_id-->
+								,#{inParam03,mode=IN,jdbcType=INTEGER}		<!-- mct_id -->
+								,#{outParam01,mode=OUT,jdbcType=INTEGER}	<!-- result_code -->
+								,#{outParam02,mode=OUT,jdbcType=INTEGER}	<!-- user_mon_sn -->								
+								)
+	}
+	</select>
+</mapper>
